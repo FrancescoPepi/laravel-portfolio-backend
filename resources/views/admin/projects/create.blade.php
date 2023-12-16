@@ -5,7 +5,7 @@
         <div class="row">
             <h1 class="mt-5">ADD A PROJECT</h1>
             <div class="col form p-4 mt-5">
-                <form action="{{ route('admin.projects.store') }}" method="POST">
+                <form action="{{ route('admin.projects.store') }}" method="POST" enctype="multipart/form-data">
                     @csrf
 
                     <div class="row">
@@ -58,7 +58,8 @@
                     <div class="form-floating">
                         <div class="my-3">
                             <label for="img" class="form-label">Select preview</label>
-                            <input class="form-control @error('img') is-invalid @enderror" type="file" id="img">
+                            <input name="img_label" class="form-control @error('img') is-invalid @enderror" type="file"
+                                id="img">
                         </div>
                         @error('img')
                             <div class="invalid-feedback">{{ $message }}</div>
