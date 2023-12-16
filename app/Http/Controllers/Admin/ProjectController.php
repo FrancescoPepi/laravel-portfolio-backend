@@ -3,8 +3,10 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Models\Project;
+use App\Models\ProjectsImage;
 use App\Models\Type;
 use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Storage;
 use Illuminate\Http\Request;
 use Illuminate\Support\Arr;
 
@@ -18,7 +20,8 @@ class ProjectController extends Controller
     public function index()
     {
         $projects = Project::orderBy('id', 'DESC')->paginate(10);
-        return view('admin.projects.index', compact('projects'));
+        $images = ProjectsImage::all();
+        return view('admin.projects.index', compact('projects', 'images'));
     }
 
     /**
@@ -40,12 +43,24 @@ class ProjectController extends Controller
      */
     public function store(Request $request)
     {
+        // dd($request->all());
         $data = $request->all();
-        // dd($data);
         $project = new Project();
         $project->fill($data);
         $project->visible = Arr::exists($data, 'visible') ? ($project->visible = 1) : null;
         $project->save();
+
+        // dd($photo);
+        if (Arr::exists($data, 'photos')) {
+            foreach ($request->photos as $photo) {
+                $image_path = Storage::put("uploads/projects/{$project->id}/images", $photo);
+                ProjectsImage::create([
+                    'project_id' => $project->id,
+                    'filename' => $image_path,
+                ]);
+            }
+        }
+
         return redirect()->route('admin.projects.index');
     }
 

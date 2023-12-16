@@ -12,13 +12,11 @@ return new class extends Migration {
      */
     public function up()
     {
-        Schema::create('projects', function (Blueprint $table) {
-            $table->id();
-            $table->string('label');
-            $table->text('url');
-            $table->string('visible')->nullable();
-            $table->text('description')->nullable();
-            $table->timestamps();
+        Schema::table('projects', function (Blueprint $table) {
+            $table
+                ->string('cover_image')
+                ->after('visible')
+                ->nullable();
         });
     }
 
@@ -29,6 +27,8 @@ return new class extends Migration {
      */
     public function down()
     {
-        Schema::dropIfExists('projects');
+        Schema::table('projects', function (Blueprint $table) {
+            $table->dropColumn('cover_image');
+        });
     }
 };

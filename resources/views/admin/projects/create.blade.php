@@ -58,8 +58,8 @@
                     <div class="form-floating">
                         <div class="my-3">
                             <label for="img" class="form-label">Select preview</label>
-                            <input name="img_label" class="form-control @error('img') is-invalid @enderror" type="file"
-                                id="img">
+                            <input multiple="multiple" name="photos[]"
+                                class="form-control @error('img') is-invalid @enderror" type="file" id="img">
                         </div>
                         @error('img')
                             <div class="invalid-feedback">{{ $message }}</div>

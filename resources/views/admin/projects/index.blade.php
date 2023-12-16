@@ -1,5 +1,7 @@
 @extends('layouts.app')
 
+
+
 @section('content')
     <div class="container mt-5">
         <a href="{{ route('admin.projects.create') }}" class=" my-4 btn btn-primary">create</a>
@@ -7,26 +9,31 @@
 
             @foreach ($projects as $project)
                 <div class="col">
-                    <div class="card">
+                    <div class="card h-100">
+                        {{-- TITOLE + TUTTON EDIT-DELETE --}}
                         <div class="card-header position-relative">
-                            <h2 class="">
-                                {{ $project->label }}
-                                <a href="{{ route('admin.projects.edit', $project->id) }}"
-                                    class="btn btn-primary btn-sm">edit</a>
+                            <h3 class="">
+                                {{ substr($project->label, 0, 12) }}@if (strlen($project->label) >= 12)
+                                    ...
+                                @endif
+                                <span class="fs-5">
+                                    <a href="{{ route('admin.projects.edit', $project->id) }}" class=" zoom-hover mx-1">
+                                        <i class="fa-solid fa-pen-to-square"></i></a>
+                                    <!-- Button trigger modal -->
 
-                                <!-- Button trigger modal -->
-                                <button type="button" class="btn btn-danger" data-bs-toggle="modal"
-                                    data-bs-target="#exampleModal-{{ $project->id }}">
-                                    eliminate
-                                </button>
+                                    <i class="fa-solid fa-trash-can zoom-hover" data-bs-toggle="modal"
+                                        data-bs-target="#exampleModal-{{ $project->id }}" style="color: #da0b0b;"></i>
 
-                            </h2>
+                                </span>
+                            </h3>
                             <span class="position-absolute p-2 top-50 end-0 translate-middle badge rounded-pill"
                                 style="background-color:{{ $project->type->color }} ">
                                 {{ $project->type->label }}
                             </span>
                         </div>
+                        {{-- BODY CARD --}}
                         <div class="card-body position-relative">
+                            {{-- BUTTON VISIBLE OR NO  --}}
                             <div class="position-relative">
                                 <form action="{{ route('admin.projects.toggleVisible', $project) }}" method="post"
                                     id="form-visible-{{ $project->id }}">
@@ -42,15 +49,31 @@
                                     </div>
                                 </form>
 
-                                {{ $project->type_id }}
+                                <h2>N Photo: {{ $images->where('project_id', $project->id)->count() }}</h2>
                             </div>
+                            {{-- COVER IMAGE --}}
+                            <div class="card-img h-50 w-25">
+                                {{-- ottenere il primo valore della colonna filename per le immagini associate a un determinato progetto. --}}
+                                {{-- @dd($images->where('project_id', $project->id)->pluck('filename')); --}}
+                                <img src="{{ asset('/storage/' .$images->where('project_id', $project->id)->pluck('filename')->first()) }}"
+                                    class="w-100 d-block image-fluid" alt="">
+                            </div>
+                            {{-- CARD TEXT --}}
+                            <div class="card-text">
+                                <hr>
+                                <h3>
+                                    {{ $project->description }}
 
-
-                            <hr>
-                            {{ $project->description }}
-                            <hr>
-                            {{ $project->url }}
+                                </h3>
+                                <hr>
+                                <h3>
+                                    Link: {{ substr($project->url, 0, 40) }}@if (strlen($project->label) >= 12)
+                                        ...
+                                    @endif
+                                </h3>
+                            </div>
                         </div>
+
                         <div class="card-footer"></div>
                     </div>
                 </div>
