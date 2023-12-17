@@ -25,6 +25,7 @@ Route::middleware(['auth', 'verified'])
     ->group(function () {
         Route::get('/', [AdminPageController::class, 'index'])->name('home');
         Route::patch('/projects/{project}/toggleVisible', [ProjectController::class, 'toggleVisible'])->name('projects.toggleVisible');
+        // Route::post('/projects/{project}', [ProjectController::class, 'update'])->name('projects.upload');
         Route::resource('projects', ProjectController::class);
     });
 

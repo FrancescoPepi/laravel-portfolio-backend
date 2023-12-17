@@ -97,8 +97,18 @@ class ProjectController extends Controller
      */
     public function update(Request $request, Project $project)
     {
+        // dd($request);
         $data = $request->all();
         $project = update($data);
+        if ($request->hasFile('cover_img')) {
+            foreach ($request->photos as $photo) {
+                $image_path = Storage::put("uploads/projects/{$project->id}/images", $photo);
+                ProjectsImage::create([
+                    'project_id' => $project->id,
+                    'filename' => $image_path,
+                ]);
+            }
+        }
         // $project->save();
         return redirect()->route('admin.projects.index');
     }

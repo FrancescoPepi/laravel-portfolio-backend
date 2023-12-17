@@ -1,11 +1,18 @@
 @extends('layouts.app')
 
+@section('cdn')
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js"
+        integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
+@endsection
+
 @section('content')
     <div class="container">
         <div class="row">
             <h1 class="mt-5">EDIT A PROJECT</h1>
             <div class="col form p-4 mt-5">
-                <form action="{{ route('admin.projects.update', $project) }}" method="POST" enctype="multipart/form-data">
+                <form id="form-upload" action="{{ route('admin.projects.update', $project) }}" method="POST"
+                    enctype="multipart/form-data">
+                    @method('PATCH')
                     @csrf
 
                     <div class="row">
@@ -105,8 +112,8 @@
     </div>
 @endsection
 
-{{-- @section('scripts')
-    <script type="text/javascript">
+@section('scripts')
+    {{-- <script type="text/javascript">
         const inputImg = document.getElementById('img');
         const previewImg = document.getElementById('preview');
         inputImg.addEventListener('change', function() {
@@ -133,5 +140,76 @@
                 reader.readAsDataURL(file);
             });
         });
+    </script> --}}
+
+    {{-- <script type="text/javascript">
+        const inputImg = document.getElementById('img');
+        const previewImg = document.getElementById('preview');
+        const buttonProva = document.getElementById('prova');
+        // const form = document.getElementById('form-upload');
+        let filesIn = [];
+        inputImg.addEventListener('change', function() {
+            filesIn.push(...this.files);
+            [fileNow] = [this.files];
+            console.log(filesIn);
+
+            for (let i = 0; i < fileNow.length; i++) {
+                // console.log(files[i]);
+                const urlImgGenerator = URL.createObjectURL(fileNow[i]);
+                console.log(urlImgGenerator);
+                previewImg.innerHTML += `<div class="col-auto">
+                                <div class="box-img">
+                                    <img src="${urlImgGenerator}" alt="">
+                                </div>
+                            </div>`;
+            }
+        });
+
+
+        $(document).ready(function() {
+
+            $('#form-upload').on('submit', function(event) {
+                event.preventDefault();
+                jQuery.ajax({
+                    url: "{{ route('admin.projects.update', $project) }}",
+                    type: "POST",
+                    data: new FormData(this),
+                    contentType: false,
+                    processData: false,
+                    files: filesIn,
+
+                    success: function(result) {
+                        console.log("successo", result, files);
+                    },
+                    error: function(result) {
+                        console.log("errato", result);
+                    }
+                }),
+            }),
+        }),
+    </script> --}}
+
+    <script type="text/javascript">
+        const inputImg = document.getElementById('img');
+        const previewImg = document.getElementById('preview');
+        // const buttonProva = document.getElementById('prova');
+        let filesIn = [];
+        let fileNow; // Sposta la dichiarazione fuori dalla funzione
+
+        inputImg.addEventListener('change', function() {
+            filesIn.push(...this.files);
+            [fileNow] = [this.files];
+            // console.log(filesIn);
+
+            for (let i = 0; i < fileNow.length; i++) {
+                const urlImgGenerator = URL.createObjectURL(fileNow[i]);
+                console.log(urlImgGenerator);
+                previewImg.innerHTML += `<div class="col-auto">
+                                <div class="box-img">
+                                    <img src="${urlImgGenerator}" alt="">
+                                </div>
+                            </div>`;
+            }
+        });
     </script>
-@endsection --}}
+@endsection
