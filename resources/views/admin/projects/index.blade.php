@@ -8,73 +8,58 @@
         <div class="row row-cols-3 g-3">
 
             @foreach ($projects as $project)
-                <div class="col">
-                    <div class="card h-100">
-                        {{-- TITOLE + TUTTON EDIT-DELETE --}}
-                        <div class="card-header position-relative">
-                            <h3 class="">
-                                {{ substr($project->label, 0, 12) }}@if (strlen($project->label) >= 12)
+                {{-- CART TEST --}}
+
+                <div class="col-3">
+                    <div class="card position-relative">
+                        <span class="position-absolute p-2 top-0 start-50 badge rounded-pill"
+                            style="background-color:{{ $project->type->color }} ">
+                            {{ $project->type->label }}
+                        </span>
+                        <span class="fs-5 position-absolute top-50 start-50">
+                            <a href="{{ route('admin.projects.edit', $project->id) }}" class=" zoom-hover mx-1">
+                                <i class="fa-solid fa-pen-to-square"></i></a>
+                            <!-- Button trigger modal -->
+
+                            <i class="fa-solid fa-trash-can zoom-hover" data-bs-toggle="modal"
+                                data-bs-target="#exampleModal-{{ $project->id }}" style="color: #da0b0b;"></i>
+
+                        </span>
+                        <img src="{{ asset('/storage/' .$images->where('project_id', $project->id)->pluck('filename')->first()) }}"
+                            class="card-img-top" style="height: 250px; object-fit:cover" alt="...">
+                        <div class="card-body">
+                            <h5 class="card-title fs-4 font-monospace">{{ $project->label }}</h5>
+                            {{-- <div class="position-relative"> --}}
+                            <form action="{{ route('admin.projects.toggleVisible', $project) }}"
+                                class="mb-3 position-relative" method="post" id="form-visible-{{ $project->id }}">
+                                {{-- <p class="card-text"> --}}
+                                <strong>Visibile: </strong>
+                                {{-- </p> --}}
+                                @csrf
+                                @method('PATCH')
+                                {{-- <div class="position-absolute p-2 top-0 end-0"> --}}
+                                <label class="switch">
+                                    <input name="visible" type="checkbox" @if ($project->visible) checked @endif>
+                                    <span
+                                        class="slider position-absolute 
+                                            bottom-0 end-0 checked-visible"
+                                        data-id="{{ $project->id }}"></span>
+                                </label>
+                                {{-- </div> --}}
+                            </form>
+
+                            {{-- </div> --}}
+                            <p class="card-text">
+                                <strong>N° Photo: </strong>{{ $images->where('project_id', $project->id)->count() }}
+                            </p>
+                            <p class="card-text"><strong>Description: </strong>{{ substr($project->description, 0, 100) }}
+                                @if (strlen($project->description) >= 100)
                                     ...
                                 @endif
-                                <span class="fs-5">
-                                    <a href="{{ route('admin.projects.edit', $project->id) }}" class=" zoom-hover mx-1">
-                                        <i class="fa-solid fa-pen-to-square"></i></a>
-                                    <!-- Button trigger modal -->
-
-                                    <i class="fa-solid fa-trash-can zoom-hover" data-bs-toggle="modal"
-                                        data-bs-target="#exampleModal-{{ $project->id }}" style="color: #da0b0b;"></i>
-
-                                </span>
-                            </h3>
-                            <span class="position-absolute p-2 top-50 end-0 translate-middle badge rounded-pill"
-                                style="background-color:{{ $project->type->color }} ">
-                                {{ $project->type->label }}
-                            </span>
+                            </p>
+                            <strong>Link: </strong><a
+                                href="{{ $project->url }}"><strong>{{ $project->label }}</strong></a>
                         </div>
-                        {{-- BODY CARD --}}
-                        <div class="card-body position-relative">
-                            {{-- BUTTON VISIBLE OR NO  --}}
-                            <div class="position-relative">
-                                <form action="{{ route('admin.projects.toggleVisible', $project) }}" method="post"
-                                    id="form-visible-{{ $project->id }}">
-                                    @csrf
-                                    @method('PATCH')
-                                    <div class="col-1 position-absolute p-2 top-100 end-0 translate-middle">
-                                        <label class="switch">
-                                            <input name="visible" type="checkbox"
-                                                @if ($project->visible) checked @endif>
-                                            <span class="slider mx-0 mt-1 checked-visible"
-                                                data-id="{{ $project->id }}"></span>
-                                        </label>
-                                    </div>
-                                </form>
-
-                                <h2>N Photo: {{ $images->where('project_id', $project->id)->count() }}</h2>
-                            </div>
-                            {{-- COVER IMAGE --}}
-                            <div class="card-img h-50 w-25">
-                                {{-- ottenere il primo valore della colonna filename per le immagini associate a un determinato progetto. --}}
-                                {{-- @dd($images->where('project_id', $project->id)->pluck('filename')); --}}
-                                <img src="{{ asset('/storage/' .$images->where('project_id', $project->id)->pluck('filename')->first()) }}"
-                                    class="w-100 d-block image-fluid" alt="">
-                            </div>
-                            {{-- CARD TEXT --}}
-                            <div class="card-text">
-                                <hr>
-                                <h3>
-                                    {{ $project->description }}
-
-                                </h3>
-                                <hr>
-                                <h3>
-                                    Link: {{ substr($project->url, 0, 40) }}@if (strlen($project->label) >= 12)
-                                        ...
-                                    @endif
-                                </h3>
-                            </div>
-                        </div>
-
-                        <div class="card-footer"></div>
                     </div>
                 </div>
             @endforeach

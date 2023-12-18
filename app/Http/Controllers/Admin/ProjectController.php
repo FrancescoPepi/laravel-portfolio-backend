@@ -99,6 +99,7 @@ class ProjectController extends Controller
     public function update(Request $request, Project $project)
     {
         $data = $request->all();
+
         $images = ProjectsImage::where('project_id', $project->id)->get();
 
         // dd($data, json_decode($data['eliminateImage']), $images);
@@ -125,6 +126,7 @@ class ProjectController extends Controller
             }
         }
         $project->update($data);
+        // dd($data, $project);
         return redirect()->route('admin.projects.index');
     }
 

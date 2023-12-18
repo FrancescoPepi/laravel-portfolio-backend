@@ -92,13 +92,9 @@
                     {{-- DESCRIPTION PROJECT --}}
                     <div class="form-floating">
                         <textarea class="my-3 form-control @error('description') is-invalid @enderror" name="description" id="description"
-                            placeholder="Url Project" style="height: 75px"></textarea>
+                            placeholder="Url Project" style="height: 75px">{{ $project->description }}</textarea>
                         <label for="description">
-                            @if ($project->description)
-                                {{ $project->description }}
-                            @else
-                                Description
-                            @endif
+                            Description
                         </label>
                         @error('description')
                             <div class="invalid-feedback">{{ $message }}</div>
