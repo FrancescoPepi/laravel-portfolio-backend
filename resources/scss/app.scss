@@ -104,33 +104,32 @@ body {
 }
 .opacity-50 {
     opacity: 0.6;
-    filter: blur(0.5px);
+    filter: blur(0.4px);
     background-color: black;
     border: 1px solid red;
+    transition: all 0.1s ease-in-out;
 }
-.conferma {
+.conferma::before {
+    position: absolute;
     background-color: green;
     top: 10px;
     left: 10px;
     border-radius: 50px;
-    // width: 15px;
-    line-height: 8px;
-    padding-bottom: 5px !important;
-    padding-top: 5px !important;
-    &::before {
-        content: "\2713";
-    }
+    line-height: 12px;
+    font-size: 15px;
+    padding: 1px;
+    content: "\2713";
+    transition: all 0.2s ease-in-out;
 }
-.non-conferma {
-    background-color: green;
+.non-conferma::before {
+    position: absolute;
+    background-color: red;
     top: 10px;
     left: 10px;
     border-radius: 50px;
-    // width: 15px;
-    line-height: 8px;
-    padding-bottom: 5px !important;
-    padding-top: 5px !important;
-    &::before {
-        content: "\2713";
-    }
+    line-height: 12px;
+    font-size: 15px;
+    padding: 1px;
+    content: "\2717";
+    transition: all 0.2s ease-in-out;
 }

@@ -78,8 +78,8 @@
                     <div class="row g-3 my-3">
                         @foreach ($images as $image)
                             <div class="col-auto">
-                                <div class="box-img position-relative" key="{{ $image->id }}">
-                                    <div class="position-absolute conferma p-1"></div>
+                                <div class="box-img position-relative conferma" key="{{ $image->id }}">
+                                    {{-- <div class="  p-1"></div> --}}
                                     <img src="{{ asset('storage/' . $image->filename) }}" alt="">
                                 </div>
                             </div>
@@ -204,15 +204,15 @@
                     let test = jSon.filter(item => item !== buttonEliminate[i].getAttribute('key'));
                     jSon = test;
                     this.classList.remove('opacity-50');
-                    // this.classList.togle('conferma');
-                    // this.classList.togle('non-conferma');
+                    this.classList.remove('non-conferma');
+                    this.classList.add('conferma');
                     console.log(this);
 
                 } else {
                     jSon.push(buttonEliminate[i].getAttribute('key'));
                     this.classList.add('opacity-50');
-                    // this.classList.togle('conferma');
-                    // this.classList.togle('non-conferma');
+                    this.classList.add('non-conferma');
+                    this.classList.remove('conferma');
 
                 }
                 // console.log(jSon);
