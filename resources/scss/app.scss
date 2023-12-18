@@ -94,3 +94,43 @@ body {
         object-fit: cover;
     }
 }
+#separatore {
+    // width: 1px;
+    opacity: 0.8;
+    content: "";
+    border-radius: 200px;
+    padding: 0;
+    border: 1px solid #d0d0d0;
+}
+.opacity-50 {
+    opacity: 0.6;
+    filter: blur(0.5px);
+    background-color: black;
+    border: 1px solid red;
+}
+.conferma {
+    background-color: green;
+    top: 10px;
+    left: 10px;
+    border-radius: 50px;
+    // width: 15px;
+    line-height: 8px;
+    padding-bottom: 5px !important;
+    padding-top: 5px !important;
+    &::before {
+        content: "\2713";
+    }
+}
+.non-conferma {
+    background-color: green;
+    top: 10px;
+    left: 10px;
+    border-radius: 50px;
+    // width: 15px;
+    line-height: 8px;
+    padding-bottom: 5px !important;
+    padding-top: 5px !important;
+    &::before {
+        content: "\2713";
+    }
+}

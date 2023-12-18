@@ -14,7 +14,7 @@
                     enctype="multipart/form-data">
                     @method('PATCH')
                     @csrf
-
+                    <input type="hidden" id="eliminate-image" name="eliminateImage">
                     <div class="row">
                         {{-- LABEL PROJECT --}}
                         {{-- @dd($images) --}}
@@ -75,16 +75,18 @@
                     </div>
 
                     {{-- PREVIEW IMG --}}
-                    <div>
-                        <div class="row g-3" id="preview">
-                            @foreach ($images as $image)
-                                <div class="col-auto">
-                                    <div class="box-img">
-                                        <img src="{{ asset('storage/' . $image->filename) }}" alt="">
-                                    </div>
+                    <div class="row g-3 my-3">
+                        @foreach ($images as $image)
+                            <div class="col-auto">
+                                <div class="box-img position-relative" key="{{ $image->id }}">
+                                    <div class="position-absolute conferma p-1"></div>
+                                    <img src="{{ asset('storage/' . $image->filename) }}" alt="">
                                 </div>
-                            @endforeach
-                        </div>
+                            </div>
+                        @endforeach
+                        <span id="separatore" class="col-11 mx-auto"></span>
+                    </div>
+                    <div class="row g-3 my-3" id="preview">
                     </div>
 
                     {{-- DESCRIPTION PROJECT --}}
@@ -192,23 +194,56 @@
     <script type="text/javascript">
         const inputImg = document.getElementById('img');
         const previewImg = document.getElementById('preview');
+        const eliminateImg = document.getElementById('eliminate-image');
+        const buttonEliminate = document.querySelectorAll('.box-img');
+        let jSon = [];
+        for (let i = 0; i < buttonEliminate.length; i++) {
+            buttonEliminate[i].addEventListener("click", function() {
+                console.log(buttonEliminate[i].getAttribute('key'));
+                if (jSon.includes(buttonEliminate[i].getAttribute('key'))) {
+                    let test = jSon.filter(item => item !== buttonEliminate[i].getAttribute('key'));
+                    jSon = test;
+                    this.classList.remove('opacity-50');
+                    // this.classList.togle('conferma');
+                    // this.classList.togle('non-conferma');
+                    console.log(this);
+
+                } else {
+                    jSon.push(buttonEliminate[i].getAttribute('key'));
+                    this.classList.add('opacity-50');
+                    // this.classList.togle('conferma');
+                    // this.classList.togle('non-conferma');
+
+                }
+                // console.log(jSon);
+                let newJson = JSON.stringify(jSon);
+                console.log(newJson);
+                eliminateImg.value = newJson;
+                console.log(eliminateImg);
+            });
+
+        }
+
         // const buttonProva = document.getElementById('prova');
-        let filesIn = [];
-        let fileNow; // Sposta la dichiarazione fuori dalla funzione
+        // let filesIn = [];
+        // let fileNow; // Sposta la dichiarazione fuori dalla funzione
 
         inputImg.addEventListener('change', function() {
-            filesIn.push(...this.files);
-            [fileNow] = [this.files];
+            // filesIn.push(...this.files);
+            let [fileNow] = [this.files];
             // console.log(filesIn);
-
+            previewImg.innerHTML = "";
             for (let i = 0; i < fileNow.length; i++) {
                 const urlImgGenerator = URL.createObjectURL(fileNow[i]);
-                console.log(urlImgGenerator);
-                previewImg.innerHTML += `<div class="col-auto">
+                const newImg = document.createElement("div");
+                newImg.classList.add("col-auto");
+
+                // console.log(urlImgGenerator);
+                newImg.innerHTML += `
                                 <div class="box-img">
                                     <img src="${urlImgGenerator}" alt="">
-                                </div>
-                            </div>`;
+                                </div>`;
+                previewImg.appendChild(newImg);
             }
         });
     </script>

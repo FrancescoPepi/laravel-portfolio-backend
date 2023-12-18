@@ -54,6 +54,7 @@ class ProjectController extends Controller
         if (Arr::exists($data, 'photos')) {
             foreach ($request->photos as $photo) {
                 $image_path = Storage::put("uploads/projects/{$project->id}/images", $photo);
+                // dd($image_path, $image_name);
                 ProjectsImage::create([
                     'project_id' => $project->id,
                     'filename' => $image_path,
@@ -97,10 +98,24 @@ class ProjectController extends Controller
      */
     public function update(Request $request, Project $project)
     {
-        // dd($request);
         $data = $request->all();
-        $project = update($data);
-        if ($request->hasFile('cover_img')) {
+        $images = ProjectsImage::where('project_id', $project->id)->get();
+
+        // dd($data, json_decode($data['eliminateImage']), $images);
+
+        if (json_decode($data['eliminateImage']) != null) {
+            foreach ($images as $image) {
+                foreach (json_decode($data['eliminateImage']) as $imgDelete) {
+                    if ($image->id == $imgDelete) {
+                        Storage::delete("$image->filename");
+                        $image->delete();
+                    }
+                }
+            }
+        }
+
+        // dd($images = ProjectsImage::where('project_id', $project->id)->get());
+        if ($request->hasFile('photos')) {
             foreach ($request->photos as $photo) {
                 $image_path = Storage::put("uploads/projects/{$project->id}/images", $photo);
                 ProjectsImage::create([
@@ -109,7 +124,7 @@ class ProjectController extends Controller
                 ]);
             }
         }
-        // $project->save();
+        $project->update($data);
         return redirect()->route('admin.projects.index');
     }
 
