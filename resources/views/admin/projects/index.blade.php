@@ -65,11 +65,7 @@
                             <p>
                                 <strong>Languages: </strong>
                                 @forelse ($project->languages as $language)
-                                    {{ $language->label }}@unless ($loop->last)
-                                    ,
-                                @else
-                                    .
-                                @endunless
+                                    {{ $language->label }}
                                 @empty
                                     -
                                 @endforelse

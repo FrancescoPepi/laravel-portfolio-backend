@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 
 use App\Models\Project;
+use App\Models\Language;
 use App\Models\ProjectsImage;
 
 class ProjectController extends Controller
@@ -19,8 +20,9 @@ class ProjectController extends Controller
     {
         $images = ProjectsImage::all();
         $projects = Project::where('visible', 1)
-            ->with('type:id,label,color')
+            ->with('type:id,label,color', 'languages')
             ->paginate(6);
+        // @dd($projects);
         return response()->json(['projects' => $projects, 'images' => $images]);
     }
 

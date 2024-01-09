@@ -18,8 +18,8 @@ class UserSeeder extends Seeder
     {
         $users = new User();
         $users->name = 'Admin';
-        $users->email = 'Admin@gmail.com';
-        $users->password = Hash::make('Admin');
+        $users->email = 'PortfolioFP@portfolio.com';
+        $users->password = Hash::make('PortfolioFP.!');
         $users->save();
     }
 }

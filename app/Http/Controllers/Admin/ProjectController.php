@@ -5,6 +5,8 @@ namespace App\Http\Controllers\Admin;
 use App\Models\Project;
 use App\Models\ProjectsImage;
 use App\Models\Type;
+use App\Models\User;
+
 use App\Models\Language;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Storage;
@@ -20,6 +22,8 @@ class ProjectController extends Controller
      */
     public function index()
     {
+        // $user = Auth::user();
+
         $projects = Project::orderBy('id', 'DESC')->paginate(10);
         $images = ProjectsImage::all();
         // $languages = Language::all();
