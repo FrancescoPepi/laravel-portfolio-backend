@@ -51,43 +51,69 @@
                             </label>
                         </div>
                     </div>
-
-                    {{-- URL PROJECT --}}
-                    <div class="form-floating">
-                        <input type="url" class="my-3 form-control @error('url') is-invalid @enderror" name="url"
-                            id="url" placeholder="Url Project" value="{{ $project->url }}">
-                        <label for="url">Url Project</label>
-                        @error('url')
-                            <div class="invalid-feedback">{{ $message }}</div>
-                        @enderror
-                    </div>
-
-                    {{-- IGM PROJECT --}}
-                    <div class="form-floating">
-                        <div class="my-3">
-                            <label for="img" class="form-label">Select Image</label>
-                            <input multiple="multiple" name="photos[]"
-                                class="form-control @error('img') is-invalid @enderror" type="file" id="img">
-                        </div>
-                        @error('img')
-                            <div class="invalid-feedback">{{ $message }}</div>
-                        @enderror
-                    </div>
-
-                    {{-- PREVIEW IMG --}}
-                    <div class="row g-3 my-3">
-                        @foreach ($images as $image)
-                            <div class="col-auto">
-                                <div class="box-img position-relative conferma" key="{{ $image->id }}">
-                                    {{-- <div class="  p-1"></div> --}}
-                                    <img src="{{ asset('storage/' . $image->filename) }}" alt="">
-                                </div>
+                    <div class="row">
+                        <div class="col-6 ">
+                            {{-- URL PROJECT --}}
+                            <div class="form-floating">
+                                <input type="url" class="my-3 form-control @error('url') is-invalid @enderror"
+                                    name="url" id="url" placeholder="Url Project" value="{{ $project->url }}">
+                                <label for="url">Url Project</label>
+                                @error('url')
+                                    <div class="invalid-feedback">{{ $message }}</div>
+                                @enderror
                             </div>
-                        @endforeach
-                        <span id="separatore" class="col-11 mx-auto"></span>
+
+                            {{-- IGM PROJECT --}}
+                            <div class="form-floating">
+                                <div class="my-3">
+                                    <label for="img" class="form-label">Select Image</label>
+                                    <input multiple="multiple" name="photos[]"
+                                        class="form-control @error('img') is-invalid @enderror" type="file"
+                                        id="img">
+                                </div>
+                                @error('img')
+                                    <div class="invalid-feedback">{{ $message }}</div>
+                                @enderror
+                            </div>
+
+
+                        </div>
+
+                        {{-- LANGUAGE --}}
+                        <div class="col-6 mt-3">
+                            <div class="row row-cols-2">
+                                @foreach ($languages as $language)
+                                    <div class="box-language">
+                                        <label class=" switch" for="language-{{ $language->id }}">
+                                            <input class="form-check-input" type="checkbox" name="languages[]"
+                                                value="{{ $language->id }}" id="language-{{ $language->id }}">
+                                            <span class="slider mx-0 mt-1 checked-visible"></span>
+                                            <span class="label-language">
+                                                {{ $language->label }}
+                                            </span>
+                                        </label>
+                                    </div>
+                                @endforeach
+
+                            </div>
+                        </div>
+                        {{-- PREVIEW IMG --}}
+                        <div class="row g-3 mt-0 mb-3">
+                            @foreach ($images as $image)
+                                <div class="col-auto">
+                                    <div class="box-img position-relative conferma" key="{{ $image->id }}">
+                                        {{-- <div class="  p-1"></div> --}}
+                                        <img src="{{ asset('storage/' . $image->filename) }}" alt="">
+                                    </div>
+                                </div>
+                            @endforeach
+                            <span id="separatore" class="col-11 mx-auto"></span>
+                        </div>
+                        <div class="row g-3 my-3" id="preview">
+                        </div>
+
                     </div>
-                    <div class="row g-3 my-3" id="preview">
-                    </div>
+
 
                     {{-- DESCRIPTION PROJECT --}}
                     <div class="form-floating">
@@ -111,82 +137,6 @@
 @endsection
 
 @section('scripts')
-    {{-- <script type="text/javascript">
-        const inputImg = document.getElementById('img');
-        const previewImg = document.getElementById('preview');
-        inputImg.addEventListener('change', function() {
-            console.log(Array.from(inputImg.files));
-            const files = Array.from(inputImg.files);
-            // previewImg.innerHTML = '';
-            files.forEach(file => {
-                const reader = new FileReader();
-                reader.addEventListener('load', function() {
-                    const image = new Image();
-                    image.src = String(this.result);
-                    image.addEventListener('load', function() {
-                        const div = document.createElement('div');
-                        div.classList.add('col-auto');
-                        const box = document.createElement('div');
-                        box.classList.add('box-img');
-                        const img = document.createElement('img');
-                        img.src = String(this.result);
-                        box.appendChild(img);
-                        div.appendChild(box);
-                        previewImg.appendChild(div);
-                    });
-                });
-                reader.readAsDataURL(file);
-            });
-        });
-    </script> --}}
-
-    {{-- <script type="text/javascript">
-        const inputImg = document.getElementById('img');
-        const previewImg = document.getElementById('preview');
-        const buttonProva = document.getElementById('prova');
-        // const form = document.getElementById('form-upload');
-        let filesIn = [];
-        inputImg.addEventListener('change', function() {
-            filesIn.push(...this.files);
-            [fileNow] = [this.files];
-            console.log(filesIn);
-
-            for (let i = 0; i < fileNow.length; i++) {
-                // console.log(files[i]);
-                const urlImgGenerator = URL.createObjectURL(fileNow[i]);
-                console.log(urlImgGenerator);
-                previewImg.innerHTML += `<div class="col-auto">
-                                <div class="box-img">
-                                    <img src="${urlImgGenerator}" alt="">
-                                </div>
-                            </div>`;
-            }
-        });
-
-
-        $(document).ready(function() {
-
-            $('#form-upload').on('submit', function(event) {
-                event.preventDefault();
-                jQuery.ajax({
-                    url: "{{ route('admin.projects.update', $project) }}",
-                    type: "POST",
-                    data: new FormData(this),
-                    contentType: false,
-                    processData: false,
-                    files: filesIn,
-
-                    success: function(result) {
-                        console.log("successo", result, files);
-                    },
-                    error: function(result) {
-                        console.log("errato", result);
-                    }
-                }),
-            }),
-        }),
-    </script> --}}
-
     <script type="text/javascript">
         const inputImg = document.getElementById('img');
         const previewImg = document.getElementById('preview');

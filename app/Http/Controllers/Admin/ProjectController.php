@@ -92,8 +92,10 @@ class ProjectController extends Controller
     public function edit(Project $project)
     {
         $types = Type::all();
+        $languages = Language::all();
+
         $images = ProjectsImage::where('project_id', $project->id)->get();
-        return view('admin.projects.edit', compact('project', 'types', 'images'));
+        return view('admin.projects.edit', compact('project', 'types', 'images', 'languages'));
     }
 
     /**

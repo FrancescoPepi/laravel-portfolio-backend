@@ -89,6 +89,9 @@
                             </div>
                         </div>
 
+                        <div class="row g-3 my-3" id="preview">
+                        </div>
+
                     </div>
 
                     {{-- DESCRIPTION PROJECT --}}
@@ -108,4 +111,30 @@
         </div>
 
     </div>
+@endsection
+
+@section('scripts')
+    <script type="text/javascript">
+        const inputImg = document.getElementById('img');
+        const previewImg = document.getElementById('preview');
+
+        inputImg.addEventListener('change', function() {
+            // filesIn.push(...this.files);
+            let [fileNow] = [this.files];
+            // console.log(filesIn);
+            previewImg.innerHTML = "";
+            for (let i = 0; i < fileNow.length; i++) {
+                const urlImgGenerator = URL.createObjectURL(fileNow[i]);
+                const newImg = document.createElement("div");
+                newImg.classList.add("col-auto");
+
+                // console.log(urlImgGenerator);
+                newImg.innerHTML += `
+                                <div class="box-img">
+                                    <img src="${urlImgGenerator}" alt="">
+                                </div>`;
+                previewImg.appendChild(newImg);
+            }
+        });
+    </script>
 @endsection
