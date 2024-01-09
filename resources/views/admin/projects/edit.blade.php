@@ -85,7 +85,8 @@
                                 @foreach ($languages as $language)
                                     <div class="box-language">
                                         <label class=" switch" for="language-{{ $language->id }}">
-                                            <input class="form-check-input" type="checkbox" name="languages[]"
+                                            <input class="form-check-input" type="checkbox"
+                                                @if (in_array($language->id, old('languages') ?? $language_ids)) checked @endif name="languages[]"
                                                 value="{{ $language->id }}" id="language-{{ $language->id }}">
                                             <span class="slider mx-0 mt-1 checked-visible"></span>
                                             <span class="label-language">

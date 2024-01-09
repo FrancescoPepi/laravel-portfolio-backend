@@ -93,9 +93,10 @@ class ProjectController extends Controller
     {
         $types = Type::all();
         $languages = Language::all();
+        $language_ids = $project->languages->pluck('id')->toArray();
 
         $images = ProjectsImage::where('project_id', $project->id)->get();
-        return view('admin.projects.edit', compact('project', 'types', 'images', 'languages'));
+        return view('admin.projects.edit', compact('project', 'types', 'images', 'languages', 'language_ids'));
     }
 
     /**
@@ -112,6 +113,9 @@ class ProjectController extends Controller
         $images = ProjectsImage::where('project_id', $project->id)->get();
 
         // dd($data, json_decode($data['eliminateImage']), $images);
+        if (Arr::exists($data, 'languages')) {
+            $project->languages()->sync($data['languages']);
+        }
 
         if (json_decode($data['eliminateImage']) != null) {
             foreach ($images as $image) {
