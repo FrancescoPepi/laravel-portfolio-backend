@@ -8,7 +8,7 @@ use Illuminate\Database\Eloquent\Model;
 class Project extends Model
 {
     use HasFactory;
-    protected $fillable = ['label', 'type_id', 'visible', 'url', 'description', 'img'];
+    protected $fillable = ['label', 'type_id', 'language_id', 'visible', 'url', 'description', 'img'];
 
     public function type()
     {
@@ -17,5 +17,9 @@ class Project extends Model
     public function projectImages()
     {
         return $this->hasMany(ProjectsImage::class);
+    }
+    public function languages()
+    {
+        return $this->belongsToMany(Language::class);
     }
 }

@@ -18,7 +18,9 @@ class ProjectController extends Controller
     public function index()
     {
         $images = ProjectsImage::all();
-        $projects = Project::with('type:id,label,color')->paginate(6);
+        $projects = Project::where('visible', 1)
+            ->with('type:id,label,color')
+            ->paginate(6);
         return response()->json(['projects' => $projects, 'images' => $images]);
     }
 
@@ -39,9 +41,16 @@ class ProjectController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
+    public function show(Project $project)
     {
-        //
+        // dd($project);
+        $images = ProjectsImage::select('filename')
+            ->where('project_id', $project->id)
+            ->get();
+        // foreach ($images as $image) {
+        //     $images->filename = $images->getAbsUriImage();
+        // }
+        return response()->json(['project' => $project, 'images' => $images]);
     }
 
     /**

@@ -39,36 +39,61 @@
                         <div class="col-1">
                             <label class="switch">
                                 <input name="visible" type="checkbox">
-                                <span class="slider mx-0 mt-1 checked-visible""></span>
+                                <span class="slider mx-0 mt-1 checked-visible"></span>
                             </label>
                         </div>
                     </div>
+                    <div class="row">
+                        <div class="col-6 ">
 
-                    {{-- URL PROJECT --}}
-                    <div class="form-floating">
-                        <input type="url" class="my-3 form-control @error('url') is-invalid @enderror" name="url"
-                            id="url" placeholder="Url Project">
-                        <label for="url">Url Project</label>
-                        @error('url')
-                            <div class="invalid-feedback">{{ $message }}</div>
-                        @enderror
-                    </div>
+                            {{-- URL PROJECT --}}
+                            <div class="form-floating">
+                                <input type="url" class="my-3 form-control @error('url') is-invalid @enderror"
+                                    name="url" id="url" placeholder="Url Project">
+                                <label for="url">Url Project</label>
+                                @error('url')
+                                    <div class="invalid-feedback">{{ $message }}</div>
+                                @enderror
+                            </div>
 
-                    {{-- IGM PROJECT --}}
-                    <div class="form-floating">
-                        <div class="my-3">
-                            <label for="img" class="form-label">Select preview</label>
-                            <input multiple="multiple" name="photos[]"
-                                class="form-control @error('img') is-invalid @enderror" type="file" id="img">
+                            {{-- IGM PROJECT --}}
+                            <div class="form-floating">
+                                <div class="my-3">
+                                    <label for="img" class="form-label">Select preview</label>
+                                    <input multiple="multiple" name="photos[]"
+                                        class="form-control @error('img') is-invalid @enderror" type="file"
+                                        id="img">
+                                </div>
+                                @error('img')
+                                    <div class="invalid-feedback">{{ $message }}</div>
+                                @enderror
+                            </div>
                         </div>
-                        @error('img')
-                            <div class="invalid-feedback">{{ $message }}</div>
-                        @enderror
+
+                        {{-- LANGUAGE --}}
+                        <div class="col-6 mt-3">
+                            <div class="row row-cols-2">
+                                @foreach ($languages as $language)
+                                    <div class="box-language">
+                                        <label class=" switch" for="language-{{ $language->id }}">
+                                            <input class="form-check-input" type="checkbox" name="languages[]"
+                                                value="{{ $language->id }}" id="language-{{ $language->id }}">
+                                            <span class="slider mx-0 mt-1 checked-visible"></span>
+                                            <span class="label-language">
+                                                {{ $language->label }}
+                                            </span>
+                                        </label>
+                                    </div>
+                                @endforeach
+
+                            </div>
+                        </div>
+
                     </div>
 
                     {{-- DESCRIPTION PROJECT --}}
                     <div class="form-floating">
-                        <textarea class="my-3 form-control @error('description') is-invalid @enderror" name="description" id="description"
+                        <textarea class="mb-3 form-control @error('description') is-invalid @enderror" name="description" id="description"
                             placeholder="Url Project" style="height: 75px"></textarea>
                         <label for="description">Description</label>
                         @error('description')

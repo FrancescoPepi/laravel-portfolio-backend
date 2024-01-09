@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Admin;
 use App\Models\Project;
 use App\Models\ProjectsImage;
 use App\Models\Type;
+use App\Models\Language;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Http\Request;
@@ -21,6 +22,7 @@ class ProjectController extends Controller
     {
         $projects = Project::orderBy('id', 'DESC')->paginate(10);
         $images = ProjectsImage::all();
+        // $languages = Language::all();
         return view('admin.projects.index', compact('projects', 'images'));
     }
 
@@ -32,7 +34,8 @@ class ProjectController extends Controller
     public function create()
     {
         $types = Type::all();
-        return view('admin.projects.create', compact('types'));
+        $languages = Language::all();
+        return view('admin.projects.create', compact('types', 'languages'));
     }
 
     /**
@@ -43,12 +46,16 @@ class ProjectController extends Controller
      */
     public function store(Request $request)
     {
+        // $user = Auth::user();
         // dd($request->all());
         $data = $request->all();
         $project = new Project();
         $project->fill($data);
         $project->visible = Arr::exists($data, 'visible') ? ($project->visible = 1) : null;
         $project->save();
+        if (Arr::exists($data, 'languages')) {
+            $project->languages()->attach($data['languages']);
+        }
 
         // dd($photo);
         if (Arr::exists($data, 'photos')) {

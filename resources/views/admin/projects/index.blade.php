@@ -57,8 +57,26 @@
                                     ...
                                 @endif
                             </p>
-                            <strong>Link: </strong><a
-                                href="{{ $project->url }}"><strong>{{ $project->label }}</strong></a>
+                            <p>
+                                <strong>Link: </strong><a
+                                    href="{{ $project->url }}"><strong>{{ $project->label }}</strong></a>
+
+                            </p>
+                            <p>
+                                <strong>Languages: </strong>
+                                @forelse ($project->languages as $language)
+                                    {{ $language->label }}@unless ($loop->last)
+                                    ,
+                                @else
+                                    .
+                                @endunless
+                                @empty
+                                    -
+                                @endforelse
+
+
+                            </p>
+
                         </div>
                     </div>
                 </div>
