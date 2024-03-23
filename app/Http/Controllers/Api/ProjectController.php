@@ -19,9 +19,7 @@ class ProjectController extends Controller
     public function index()
     {
         $images = ProjectsImage::all();
-        $projects = Project::where('visible', 1)
-            ->with('type:id,label,color', 'languages')
-            ->paginate(6);
+        $projects = Project::where('visible', 1)->with('type:id,label,color', 'languages')->paginate(6);
         // @dd($projects);
         return response()->json(['projects' => $projects, 'images' => $images]);
     }

@@ -15,7 +15,7 @@ class LanguageSeeder extends Seeder
      */
     public function run()
     {
-        $labels = ['HTML', 'CSS', 'Vue.js', 'JavaScript', 'TypeScript', 'PHP', 'GIT', 'SCSS', 'Laravel'];
+        $labels = ['HTML', 'CSS', 'Vue.js', 'JavaScript', 'Node.JS', 'PHP', 'Bootstrap', 'SCSS', 'Laravel'];
 
         foreach ($labels as $label) {
             $language = new Language();
